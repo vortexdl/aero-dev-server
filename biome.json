@@ -1,0 +1,12 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "asNeeded",
+			"trailingComma": "none"
+		}
+	},
+	"files": {
+		"ignore": ["/**/dist"]
+	}
+}
