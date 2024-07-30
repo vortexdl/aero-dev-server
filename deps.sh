@@ -1,11 +1,11 @@
 org="https://github.com/VyperGroup/"
 
-if [ ! -d aero ]
+if [ ! -d demo-site ]
 then
-    git clone "${org}/aero-dev-server.git"
+    git clone "${org}/aero-demo-site.git" demo-site
 fi
 
-cd aero-demo-server
+cd demo-site
     git pull > /dev/null
     bash deps.sh
 cd ..
