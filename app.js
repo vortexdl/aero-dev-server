@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { createServer } from "node.http";
+import { createServer } from "node:http";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 
@@ -30,10 +30,7 @@ fastify.register(fastifyStatic, {
 	decorateReply: false
 });
 fastify.register(fastifyStatic, {
-	root: join(
-		fileURLToPath(new URL(".", import.meta.url)),
-		"./aero-demo-site"
-	),
+	root: join(fileURLToPath(new URL(".", import.meta.url)), "./demo-site"),
 	decorateReply: false
 });
 fastify.register(fastifyStatic, {
