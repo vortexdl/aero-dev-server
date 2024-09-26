@@ -77,42 +77,6 @@ async function aeroConfigServe(fastify, opts) {
 
 fastify.register(aeroConfigServe);
 
-/*
-fastify.route({
-	method: "GET",
-	url: "/aero/",
-	handler: async (req, reply) => {
-		console.log(req.url);
-		try {
-			if (req.url === "/aero/config.aero.js") {
-				const configFilePath = join(
-					fileURLToPath(new URL(".", import.meta.url)),
-					"../examples/config.js"
-				);
-				const configFile = await fs.readFile(configFilePath, "utf8");
-				reply
-					.code(200)
-					.header("Content-Type", "application/javascript")
-					.send(configFile);
-			}
-			if (req.url === "/aero/sandbox/config.aero.js") {
-				const configFilePath = join(
-					fileURLToPath(new URL(".", import.meta.url)),
-					"../src/AeroSandbox/examples/config.js"
-				);
-				const configFile = await fs.readFile(configFilePath, "utf8");
-				reply
-					.code(200)
-					.header("Content-Type", "application/javascript")
-					.send(configFile);
-			}
-		} catch (err) {
-			reply.code(500).send(err);
-		}
-	}
-});
-*/
-
 fastify.register(fastifyStatic, {
 	root: join(fileURLToPath(new URL(".", import.meta.url)), "../tests"),
 	prefix: "/tests",
