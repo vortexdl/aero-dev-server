@@ -5,14 +5,15 @@ import fs from "node:fs/promises";
 import { createServer } from "node:http";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
-//import middie from "@fastify/middie";
 
-//import wisp from "wisp-server-node";
+import wisp from "wisp-server-node";
 
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { bareModulePath } from "@mercuryworkshop/bare-as-module3";
+
+import config from "./config.js";
 
 const fastify = Fastify({
 	serverFactory: handler => {
@@ -21,65 +22,85 @@ const fastify = Fastify({
 				handler(req, res);
 			})
 			.on("upgrade", (req, socket, head) => {
-				//wisp.routeRequest(req, socket, head);
+				wisp.routeRequest(req, socket, head);
 			});
 	},
 	logger: true
 });
 
-/*
-// Serve the config files here from the examples folders in aero and AeroSandbox
-await fastify
-	.register(middie, { hook: "preHandler" })
-	.register(async fastify => {
-		fastify.addHook("onRequest", async (req, reply) => {
-			
-		});
-	});
-*/
-
-async function aeroConfigServe(fastify, opts) {
-	fastify.get("/aero/config.aero.js", async (req, reply) => {
+async function aeroExamplesServe(fastify) {
+	fastify.get("/sw.js", async (_req, reply) => {
 		try {
-			if (req.url === "/aero/config.aero.js") {
-				const configFilePath = join(
-					fileURLToPath(new URL(".", import.meta.url)),
-					"../examples/config.js"
-				);
-				const configFile = await fs.readFile(configFilePath, "utf8");
-				reply
-					.code(200)
-					.header("Content-Type", "application/javascript")
-					.send(configFile);
-			}
+			const swFilePath = join(
+				fileURLToPath(new URL(".", import.meta.url)),
+				"../examples/swWithExtras.js"
+			);
+			const swFile = await fs.readFile(swFilePath, "utf8");
+			reply
+				.code(200)
+				.header("Content-Type", "application/javascript")
+				.send(swFile);
 		} catch (err) {
 			reply.code(500).send(err);
 		}
 	});
-	fastify.get("/aero/sandbox/config.aero.js", async (req, reply) => {
+	fastify.get("/aero/defaultConfig.aero.js", async (_req, reply) => {
 		try {
-			if (req.url === "/aero/sandbox/config.aero.js") {
-				const configFilePath = join(
-					fileURLToPath(new URL(".", import.meta.url)),
-					"../src/AeroSandbox/examples/config.js"
-				);
-				const configFile = await fs.readFile(configFilePath, "utf8");
-				reply
-					.code(200)
-					.header("Content-Type", "application/javascript")
-					.send(configFile);
-			}
+			const configFilePath = join(
+				fileURLToPath(new URL(".", import.meta.url)),
+				"../src/defaultConfig.js"
+			);
+			const configFile = await fs.readFile(configFilePath, "utf8");
+			reply
+				.code(200)
+				.header("Content-Type", "application/javascript")
+				.send(configFile);
+		} catch (err) {
+			reply.code(500).send(err);
+		}
+	});
+	fastify.get("/aero/config.aero.js", async (_req, reply) => {
+		try {
+			const configFilePath = join(
+				fileURLToPath(new URL(".", import.meta.url)),
+				"../examples/config.js"
+			);
+			const configFile = await fs.readFile(configFilePath, "utf8");
+			reply
+				.code(200)
+				.header("Content-Type", "application/javascript")
+				.send(configFile);
+		} catch (err) {
+			reply.code(500).send(err);
+		}
+	});
+	fastify.get("/aero/sandbox/config.aero.js", async (_req, reply) => {
+		try {
+			const configFilePath = join(
+				fileURLToPath(new URL(".", import.meta.url)),
+				"../src/AeroSandbox/examples/config.js"
+			);
+			const configFile = await fs.readFile(configFilePath, "utf8");
+			reply
+				.code(200)
+				.header("Content-Type", "application/javascript")
+				.send(configFile);
 		} catch (err) {
 			reply.code(500).send(err);
 		}
 	});
 }
 
-fastify.register(aeroConfigServe);
+fastify.register(aeroExamplesServe);
 
 fastify.register(fastifyStatic, {
 	root: join(fileURLToPath(new URL(".", import.meta.url)), "../tests"),
 	prefix: "/tests",
+	decorateReply: false
+});
+fastify.register(fastifyStatic, {
+	root: join(fileURLToPath(new URL(".", import.meta.url)), "../extras"),
+	prefix: "/aero/extras/",
 	decorateReply: false
 });
 fastify.register(fastifyStatic, {
@@ -121,5 +142,5 @@ fastify.register(fastifyStatic, {
 });
 
 fastify.listen({
-	port: 3000
+	port: config.port
 });
