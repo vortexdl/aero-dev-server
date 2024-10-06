@@ -7,6 +7,7 @@ import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 
 import wisp from "wisp-server-node";
+import { createBareServer } from "@tomphttp/bare-server-node";
 
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
@@ -15,11 +16,19 @@ import { bareModulePath } from "@mercuryworkshop/bare-as-module3";
 
 import config from "./config.js";
 
+const bare = createBareServer("/bare/", {
+	logErrors: true
+});
+
 const fastify = Fastify({
 	serverFactory: handler => {
 		return createServer()
 			.on("request", (req, res) => {
-				handler(req, res);
+				if (bare.shouldRoute(req)) {
+					bare.routeRequest(req, res);
+				} else {
+					handler(req, res);
+				}
 			})
 			.on("upgrade", (req, socket, head) => {
 				wisp.routeRequest(req, socket, head);
@@ -142,5 +151,6 @@ fastify.register(fastifyStatic, {
 });
 
 fastify.listen({
+	host: config.host,
 	port: config.port
 });
