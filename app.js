@@ -53,7 +53,7 @@ async function aeroExamplesServe(fastify) {
 			reply.code(500).send(err);
 		}
 	});
-	fastify.get("/aero/defaultConfig.aero.js", async (_req, reply) => {
+	fastify.get("/aero/defaultConfig.js", async (_req, reply) => {
 		try {
 			const configFilePath = join(
 				fileURLToPath(new URL(".", import.meta.url)),
@@ -68,7 +68,7 @@ async function aeroExamplesServe(fastify) {
 			reply.code(500).send(err);
 		}
 	});
-	fastify.get("/aero/config.aero.js", async (_req, reply) => {
+	fastify.get("/aero/config.js", async (_req, reply) => {
 		try {
 			const configFilePath = join(
 				fileURLToPath(new URL(".", import.meta.url)),
@@ -83,7 +83,7 @@ async function aeroExamplesServe(fastify) {
 			reply.code(500).send(err);
 		}
 	});
-	fastify.get("/aero/sandbox/config.aero.js", async (_req, reply) => {
+	fastify.get("/aero/sandbox/config.js", async (_req, reply) => {
 		try {
 			const configFilePath = join(
 				fileURLToPath(new URL(".", import.meta.url)),
@@ -121,7 +121,7 @@ fastify.register(fastifyStatic, {
 	decorateReply: false
 });
 fastify.register(fastifyStatic, {
-	root: join(fileURLToPath(new URL(".", import.meta.url)), "../dist/"),
+	root: join(fileURLToPath(new URL(".", import.meta.url)), "../dist/sw/"),
 	prefix: "/aero/",
 	decorateReply: false
 });
