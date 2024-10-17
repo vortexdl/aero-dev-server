@@ -7,7 +7,7 @@ import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 
 import wisp from "wisp-server-node";
-import { createBareServer } from "@tomphttp/bare-server-node";
+import { createBareServer } from "@nebula-services/bare-server-node";
 
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
