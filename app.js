@@ -115,13 +115,20 @@ fastify.register(fastifyStatic, {
 fastify.register(fastifyStatic, {
 	root: join(
 		fileURLToPath(new URL(".", import.meta.url)),
-		"../src/AeroSandbox/dist/"
+		"../src/AeroSandbox/dist/debug/"
 	),
 	prefix: "/aero/sandbox/",
 	decorateReply: false
 });
 fastify.register(fastifyStatic, {
+<<<<<<< HEAD
 	root: join(fileURLToPath(new URL(".", import.meta.url)), "../dist/sw/"),
+=======
+	root: join(
+		fileURLToPath(new URL(".", import.meta.url)),
+		"../dist/debug/sw"
+	),
+>>>>>>> 8620c08 (Update routes due to recent changes in how aero builds)
 	prefix: "/aero/",
 	decorateReply: false
 });
