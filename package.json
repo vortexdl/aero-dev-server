@@ -8,7 +8,9 @@
 	"license": "AGPL-3.0-or-later",
 	"type": "module",
 	"scripts": {
-		"start": "node app.js"
+		"start": "node app.js",
+		"format": "biome format --write .",
+		"lint": "biome lint --write ."
 	},
 	"dependencies": {
 		"@fastify/middie": "^9.0.2",
