@@ -1,6 +1,6 @@
 org="https://github.com/VyperGroup/"
 
-npm install > /dev/null
+npm i
 
 if [ ! -d demo-site ]
 then
@@ -8,7 +8,7 @@ then
 fi
 
 cd demo-site
-    git pull > /dev/null
+    git pull
     bash deps.sh
 cd ..
 
